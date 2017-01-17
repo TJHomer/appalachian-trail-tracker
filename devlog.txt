@@ -1,0 +1,13 @@
+January 17, 2017
+    Today I set up this project on github, and also attempted a few sketches for what I want the final project to look like.
+    I have divided the project into four basic sub-projects and I will attempt to make progress on each of them every day.
+
+    Goals for tomorrow:
+        Display:    Find map of Appalachian Trail and import it into Inkscape.
+                    Determine exactly how far apart each LED will be and how much space I will have for that.
+        Website:    Figure out how to get GPS data off an Android phone (this may take several days).
+                    Choose a url.
+        Circuitry:  Determine how many LEDs I will need and start an initial parts list.
+                    Choose what type of LEDs I will use.
+        Code:       Write the basic scope of the sketch and comment what will go where.
+                    Determine what arduino shield I will need to connect to the internet.
