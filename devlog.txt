@@ -40,3 +40,27 @@ January 18, 2017
         sure how those work and how to calculate all of that, so I will have to learn that.
         -Start work on the website grabbing data.
         -Start turning the state lines into paths in Inkscape.
+
+
+January 19, 2017
+    Display:
+        I found a new map of the Eastern US that was already an svg.  Now I'm just going to find an svg of the AT and
+        copy it into the other map and put it in the right place.  It will be a lot easier than trying to alter that
+        other map.
+    Website:
+        Found a Wordpress plugin for logging GPS.
+    Circuitry:
+        Purchased this: DIYmail Nodemcu Lua ESP8266 CP2102 Wifi
+        (https://www.amazon.com/gp/product/B00XJG7GEK/ref=oh_aui_detailpage_o03_s00?ie=UTF8&psc=1)
+        It's an open source arduino clone that automatically has wifi built in.  This will be perfect, and a lot more
+        affordable.
+    Code:
+        Looked into how to easier log into my friend's wifi.  He uses a public group wifi, but with a login page.
+        There are no scripts or fancy stuff on the page, and I may have even found a way to bypass the login page.
+
+
+    Goals for tomorrow:
+        -Look into how to use that wordpress plugin.
+        -Add the AT to my map
+        -Look into how to use shift registers
+        -Divide the LEDs into GPS ranges
