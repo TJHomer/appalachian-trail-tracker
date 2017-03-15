@@ -2,7 +2,6 @@ import machine
 import time
 import network
 import socket
-import esp
 
 
 ## Functions that connect to the internet to get latitude data
@@ -11,7 +10,26 @@ def do_connect():
     sta_if = network.WLAN(network.STA_IF)
     print('connecting to network\n')
     sta_if.active(True)
-    sta_if.connect('<your_internet>', '<your_password>')
+    sta_if.connect('Hotspot')
+    print('network config:', sta_if.ifconfig())
+    if sta_if.ifconfig()[0] == '0.0.0.0':
+        print('trying again- 0000')
+        time.sleep(5)
+        do_connect()
+    s = socket.socket()
+    time.sleep(5)
+    try:
+        s.connect(('192.168.17.1', 3456))
+    except:
+        time.sleep(5)
+        print('trying again')
+        s.connect(('192.168.17.1', 3456))
+    path = 'Login?ticket=Free'
+    host = '192.168.17.1:3456'
+    s.send(bytes('GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))
+
+    time.sleep(5)
+    s.close()
 
 
 def http_get(url):
@@ -19,10 +37,18 @@ def http_get(url):
     _, _, host, path = url.split('/', 3)
     addr = socket.getaddrinfo(host, 80)[0][-1]
     s = socket.socket()
-    s.connect(addr)
+    time.sleep(2)
+    try:
+        s.connect(addr)
+    except:
+        s.close()
+        time.sleep(5)
+        print('trying again')
+        s = socket.socket()
+        s.connect(addr)
     time.sleep(5)
     s.send(bytes('GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n' % (path, host), 'utf8'))
-    buffer = s.recv(464)  # this is the http info that comes before the actual data you want
+    buffer = s.recv(464)
     for i in range(5):
         data = s.recv(750)
         if data:
@@ -36,9 +62,9 @@ def http_get(url):
 
 
 def get_info_from_data():
-    url = http_get('<your_tracking_website>')
+    url = http_get('https://tylerswalk.website/wp-json/wp/v2/location')
     for i in range(len(url)):
-        if '<your-title>' in url[i]:
+        if 'at-hike' in url[i]:
             return float(url[i + 40])
 
 
@@ -54,33 +80,36 @@ class LED(object):
         self.LED_list.append(self)
 
 
-led1 = LED(26, lat_upper=34.913198, lat_lower=34)
+led1 = LED(26, lat_upper=34.913198, lat_lower=34)  # GA
 led2 = LED(27, lat_upper=35.295240, lat_lower=led1.lat_upper)
-led3 = LED(28, lat_upper=35.677282, lat_lower=led2.lat_upper)
-led4 = LED(29, lat_upper=35.059324, lat_lower=led3.lat_upper)
+led3 = LED(28, lat_upper=35.677282, lat_lower=led2.lat_upper)  # NC
+led4 = LED(29, lat_upper=36.059324, lat_lower=led3.lat_upper)
 led5 = LED(30, lat_upper=36.441365, lat_lower=led4.lat_upper)
-led6 = LED(31, lat_upper=37.015106, lat_lower=led5.lat_upper)
-led7 = LED(17, lat_upper=37.397148, lat_lower=led6.lat_upper)
+led6 = LED(31, lat_upper=37.015106, lat_lower=led5.lat_upper)  # TN
+led7 = LED(17, lat_upper=37.397148, lat_lower=led6.lat_upper)  # VA
 led8 = LED(18, lat_upper=37.588169, lat_lower=led7.lat_upper)
 led9 = LED(19, lat_upper=37.874400, lat_lower=led8.lat_upper)
 led10 = LED(20, lat_upper=38.256742, lat_lower=led9.lat_upper)
 led11 = LED(21, lat_upper=38.734972, lat_lower=led10.lat_upper)
 led12 = LED(22, lat_upper=39.213201, lat_lower=led11.lat_upper)
-led13 = LED(23, lat_upper=39.786942, lat_lower=led12.lat_upper)
-led14 = LED(9, lat_upper=40.265171, lat_lower=led13.lat_upper)
-led15 = LED(10, lat_upper=40.551703, lat_lower=led14.lat_upper)
-led16 = LED(11, lat_upper=40.441365, lat_lower=led15.lat_upper)
+led13 = LED(23, lat_upper=39.786942, lat_lower=led12.lat_upper)  # WV
+led14 = LED(9, lat_upper=40.265171, lat_lower=led13.lat_upper)  # PA
+led15 = LED(10, lat_upper=40.441365, lat_lower=led14.lat_upper)
+led16 = LED(11, lat_upper=40.551703, lat_lower=led15.lat_upper)
 led17 = LED(12, lat_upper=41.220276, lat_lower=led16.lat_upper)
-led18 = LED(13, lat_upper=41.602318, lat_lower=led17.lat_upper)
-led19 = LED(14, lat_upper=42.176058, lat_lower=led18.lat_upper)
-led20 = LED(15, lat_upper=42.654288, lat_lower=led19.lat_upper)
-led21 = LED(1, lat_upper=43.228028, lat_lower=led20.lat_upper)
+led18 = LED(13, lat_upper=41.602318, lat_lower=led17.lat_upper)  # NY
+led19 = LED(14, lat_upper=42.176058, lat_lower=led18.lat_upper)  # CT
+led20 = LED(15, lat_upper=42.654288, lat_lower=led19.lat_upper)  # MA
+led21 = LED(1, lat_upper=43.228028, lat_lower=led20.lat_upper)  # VT
 led22 = LED(2, lat_upper=43.610070, lat_lower=led21.lat_upper)
-led23 = LED(3, lat_upper=44.088300, lat_lower=led22.lat_upper)
-led24 = LED(4, lat_upper=44.662040, lat_lower=led23.lat_upper)
+led23 = LED(3, lat_upper=44.088300, lat_lower=led22.lat_upper)  # NH
+led24 = LED(4, lat_upper=44.662040, lat_lower=led23.lat_upper)  # ME
 led25 = LED(5, lat_upper=45.140270, lat_lower=led24.lat_upper)
 led26 = LED(6, lat_upper=45.522312, lat_lower=led25.lat_upper)
 led27 = LED(7, lat_upper=46.000000, lat_lower=led26.lat_upper)
+
+
+##led28 = LED(8, lat_upper=100, lat_lower=led27.lat_upper)
 
 
 def led_on(lat_coord):
@@ -129,4 +158,6 @@ print(lat)
 value = led_on(lat)
 clear()
 set_pin(value)
-
+for i in range(3):
+    time.sleep(3600)
+machine.reset()
