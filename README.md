@@ -1,8 +1,8 @@
 
 
-***Appalatian Trail Tracker***
+***Appalachian Trail Tracker***
 
-Baasic overview:  my friend is hiking the Appalatian Trail and I wanted to make a gift for his family to track his progress
+Basic overview:  my friend is hiking the Appalachian Trail and I wanted to make a gift for his family to track his progress
     on the way.  This is a map that hangs on their wall and an LED lights up where he is.
 
 It works like this:
